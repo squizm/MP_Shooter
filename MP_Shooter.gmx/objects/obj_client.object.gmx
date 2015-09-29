@@ -30,19 +30,17 @@ var type = network_socket_tcp;
 var ip = "localhost";
 var port = 8008135;
 
-socket = network_create_socket(type);
-connection = network_connect(socket, ip, port);
-
 var size = 1024;
 var type = buffer_fixed;
 var alignment = 1;
-buffer = buffer_create(size, type, alignment);
+global.buffer = buffer_create(size, type, alignment);
+
+socket = network_create_socket(type);
+global.connection = network_connect(socket, ip, port);
 </string>
           </argument>
         </arguments>
       </action>
-    </event>
-    <event eventtype="6" enumb="53">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -59,14 +57,40 @@ buffer = buffer_create(size, type, alignment);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///create a click and send it to server
-instance_create(mouse_x, mouse_y, obj_click);
-
-buffer_seek(buffer, buffer_seek_start, 0);
-buffer_write(buffer, buffer_u8, 1); // 1 is user chosen identifier of the type of message
-buffer_write(buffer, buffer_u32, mouse_x);
-buffer_write(buffer, buffer_u32, mouse_y);
-network_send_packet(socket, buffer, buffer_tell(buffer));
+            <string>/// Keyboard State
+move_keys[0] = false;
+move_keys[1] = false;
+move_keys[2] = false;
+move_keys[3] = false;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="3" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/// update movement keys
+scr_send_packet(PACKET_KEY_PRESSED, 
+keyboard_check(ord("W")),
+keyboard_check(ord("A")),
+keyboard_check(ord("S")),
+keyboard_check(ord("D"))
+);
 </string>
           </argument>
         </arguments>
@@ -95,7 +119,7 @@ switch(type_event)
 {
     case network_type_data:
         var buffer = async_load[? "buffer"];
-        buffer_seek(buffer, buffer_start, 0);
+        buffer_seek(buffer, buffer_seek_start, 0);
         scr_received_packet(buffer);
         break;
 }
@@ -123,7 +147,33 @@ switch(type_event)
             <kind>1</kind>
             <string>/// clean up
 network_destroy(socket)
-buffer_delete(buffer)
+buffer_delete(global.buffer)
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="64">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if(keyboard_key &gt; 0)
+{
+    draw_text(5, 5, "Key Pressed: " + string(keyboard_key));
+}
 </string>
           </argument>
         </arguments>

@@ -72,7 +72,7 @@
     <option_changeresolution>false</option_changeresolution>
     <option_closeesc>true</option_closeesc>
     <option_colordepth>0</option_colordepth>
-    <option_display_name>MP_Shooter</option_display_name>
+    <option_display_name>MP_Shooter Server</option_display_name>
     <option_displayerrors>True</option_displayerrors>
     <option_facebook_app_display_name></option_facebook_app_display_name>
     <option_facebook_appid></option_facebook_appid>
@@ -267,8 +267,8 @@
     <option_savekey>true</option_savekey>
     <option_scale>-1</option_scale>
     <option_scaleprogress>true</option_scaleprogress>
-    <option_sci_UseSCI>-1</option_sci_UseSCI>
-    <option_sci_serverLocation>https://github.com/squizm/MP_Shooter.git</option_sci_serverLocation>
+    <option_sci_UseSCI>0</option_sci_UseSCI>
+    <option_sci_serverLocation></option_sci_serverLocation>
     <option_screenkey>True</option_screenkey>
     <option_screenshotkey>true</option_screenshotkey>
     <option_shortcircuit>True</option_shortcircuit>

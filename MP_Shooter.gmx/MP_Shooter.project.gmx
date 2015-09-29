@@ -5,19 +5,30 @@
   </Configs>
   <NewExtensions/>
   <sounds name="sound"/>
-  <sprites name="sprites"/>
+  <sprites name="sprites">
+    <sprite>sprites\spr_character</sprite>
+  </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
   <scripts name="scripts">
     <script>scripts\scr_received_packet.gml</script>
+    <script>scripts\scr_create_player.gml</script>
+    <script>scripts\scr_send_packet.gml</script>
+    <script>scripts\scr_update_object.gml</script>
   </scripts>
   <objects name="objects">
     <object>objects\obj_client</object>
-    <object>objects\obj_click</object>
+    <object>objects\obj_character</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\rm_client</room>
   </rooms>
+  <constants number="4">
+    <constant name="PACKET_MOUSE_PRESSED">1</constant>
+    <constant name="PACKET_KEY_PRESSED">2</constant>
+    <constant name="PACKET_CREATE_PLAYER">3</constant>
+    <constant name="PACKET_MOVE_OBJECT">4</constant>
+  </constants>
   <help>
     <rtf>help.rtf</rtf>
   </help>

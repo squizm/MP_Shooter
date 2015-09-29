@@ -35,9 +35,11 @@ server = network_create_server(type, port, max_clients);
 var size = 1024;
 var type = buffer_fixed;
 var alignment = 1;
-buffer = buffer_create(size, type, alignment);
+global.buffer = buffer_create(size, type, alignment);
 
-socket_list = ds_list_create();
+global.socket_list = ds_list_create();
+
+
 </string>
           </argument>
         </arguments>
@@ -68,22 +70,24 @@ switch(type_event)
 {
     case network_type_connect:
         // add client to socket list
-        ds_list_add(socket_list, async_load[? "socket"]);
+        var socket = async_load[? "socket"];
+        ds_list_add(global.socket_list, socket);
+        scr_add_player(socket);
         break;
     case network_type_disconnect:
         // remove socket from list
         var socket = async_load[? "socket"];
-        var find_socket = ds_list_find_index(socket_list, socket);
+        var find_socket = ds_list_find_index(global.socket_list, socket);
         if(find_socket &gt;= 0)
         {
-            ds_list_delete(socket_list, find_socket);
+            ds_list_delete(global.socket_list, find_socket);
+            scr_delete_player(socket);
         }
         break;
     case network_type_data:
         //handle data via script
         var buffer = async_load[? "buffer"];
-        var socket = async_load[? "socket"];
-        buffer_seek(buffer, buffer_seek_start, 0);
+        var socket = async_load[? "id"];
         scr_received_packet(buffer, socket);
         break;
 }
@@ -114,8 +118,8 @@ switch(type_event)
             <string>/// destroy server obj
 
 network_destroy(server);
-buffer_delete(buffer);
-ds_list_destroy(socket_list);
+buffer_delete(global.buffer);
+ds_list_destroy(global.socket_list);
 </string>
           </argument>
         </arguments>
@@ -139,7 +143,7 @@ ds_list_destroy(socket_list);
           <argument>
             <kind>1</kind>
             <string>draw_text(5, 5, "Server Status: " + string( server &gt;= 0));
-draw_text(5, 20, "Total Clients: " + string(ds_list_size(socket_list)));
+draw_text(5, 20, "Total Clients: " + string(ds_list_size(global.socket_list)));
 </string>
           </argument>
         </arguments>
